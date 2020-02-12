@@ -1,0 +1,97 @@
+        //char string[100];
+        //while( fscanf( ifp, "%s", string ) != EOF ){
+        int line_count = 0;
+        int space_count = 0;
+        int word_count = 0;
+        int c;
+        char *string = (char *)calloc(100, sizeof(char));
+        list_t *top, *last, *curr;
+        top = curr = NULL;
+        while (/*(c = getc(ifp)) != EOF*/ !feof(ifp)){          //ungetc(c, ifp);
+                //fprintf(ofp, "%d", curr->size);
+                fscanf(ifp, "%s", string);
+                int counter;
+                if (top == NULL){
+                        top = curr = last = make_list(string);
+                }else{
+                        curr->next = make_list(string);
+                        last = curr->next;
+                        last->prev = curr;
+                        curr = curr->next;
+                        //fprintf(ofp, "%s", curr);
+                        int total_space = line_count + curr->size + space_count;
+                        if (total_space  < width){
+                                fprintf( ofp, "%s", curr->c);
+                                fprintf( ofp, "%s", " ");
+                        //      space_count++;
+                                line_count = curr->size +  space_count;
+                        //      fprintf(ofp, "%s", "less Line + size = ");
+                        //      fprintf( ofp, "%d", line_count+curr->size);
+                        }
+                        else if( total_space > width){
+                        //      fprintf(ofp, "%s", "grt Line + size = ");
+                        //      fprintf(ofp, "%d", line_count+curr->size);
+                                fprintf( ofp, "%s", "GRTR \n");
+                                line_count = 0;
+                                space_count = 0;
+                        }
+                        else if (total_space == width){
+                        //fprintf(ofp, "%s", curr->c);
+                        //fprintf(ofp, "%s", "eql Line + size = ");
+                        //fprintf(ofp, "%d", line_count + curr->size);
+                        fprintf(ofp, "%s", "\n");
+                        line_count = 0;
+                        space_count = 0;
+                        //fprintf(ofp, "%d",line_count+curr->size );
+                        }
+                        //fprintf( ofp, "%d", curr->size);
+                }
+
+
+
+second version:
+
+
+                fprintf(ofp, "%20s", curr->c);
+/*
+                if(last == NULL){
+                fprintf(ofp, "%s", curr->c);
+                }
+                if(lineTracker >= width){
+
+                fprintf(ofp, "%s", "\n");
+                lineTracker = 0;
+                currSize = 0;
+                spacer = 0;
+
+                }else{
+                currSize = currSize + curr->size;
+                fprintf(ofp, "%s", " ");
+                spacer++;
+                lineTracker = currSize + spacer;
+
+                }*/
+        }
+
+
+
+
+Third:  
+
+ while ( ( fscanf ( ifp, "%60s", word)) == 1) {
+        if ( strlen ( line) + strlen ( word) + 1 <= width) {
+            strcat ( line, " ");
+            strcat ( line, word);
+            out = 0;
+        }
+        else {
+            fprintf ( ofp, "%s\n", line);
+            strcpy ( line, word);
+            out = 1;
+        }
+    }
+    if ( !out) {
+        fprintf ( ofp, "%s\n", line);
+    }
+
+}
